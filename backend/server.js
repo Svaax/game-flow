@@ -42,5 +42,3 @@ initializeDatabase();
 
 
 app.listen(PORT, () => {console.log(`App is running on port ${PORT}`)})
-
-// TODO написать API.
