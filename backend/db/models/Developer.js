@@ -1,30 +1,37 @@
-// models/Developer.js
-module.exports = (sequelize, DataTypes) => {
+export default (sequelize, DataTypes) => {
     const Developer = sequelize.define('Developer', {
-        id: {
+        developer_id: {
             type: DataTypes.INTEGER,
             primaryKey: true,
-            autoIncrement: true
+            autoIncrement: true,
         },
-        name: {
-            type: DataTypes.STRING,
-            allowNull: false
+        user_id: {
+            type: DataTypes.INTEGER,
+            allowNull: false,
+            unique: true,
+            references: {
+                model: 'users',
+                key: 'user_id',
+            },
+        },
+        company_name: {
+            type: DataTypes.STRING(100),
+            allowNull: false,
         },
         description: {
-            type: DataTypes.TEXT
-        }
+            type: DataTypes.TEXT,
+        },
+        website: {
+            type: DataTypes.STRING(255),
+        },
+        verified: {
+            type: DataTypes.BOOLEAN,
+            allowNull: false,
+            defaultValue: false,
+        },
+    }, {
+        timestamps: false,
+        tableName: 'developers',
     });
-
-    Developer.associate = models => {
-        Developer.hasMany(models.Game, {
-            foreignKey: 'developerId',
-            as: 'developedGames'
-        });
-        Developer.hasMany(models.SupportAgent, {
-            foreignKey: 'developerId',
-            as: 'supportAgents'
-        });
-    };
-
     return Developer;
-};
+}

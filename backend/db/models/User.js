@@ -1,46 +1,67 @@
-// models/User.js
-module.exports = (sequelize, DataTypes) => {
+export default (sequelize, DataTypes) => {
     const User = sequelize.define('User', {
-        id: {
+        user_id: {
             type: DataTypes.INTEGER,
             primaryKey: true,
-            autoIncrement: true
+            autoIncrement: true,
         },
         username: {
-            type: DataTypes.STRING,
+            type: DataTypes.STRING(50),
             allowNull: false,
-            unique: true
+            unique: true,
         },
-        bio: {
-            type: DataTypes.TEXT
+        email: {
+            type: DataTypes.STRING(100),
+            allowNull: false,
+            unique: true,
+            validate: {isEmail: true},
         },
-        status: {
-            type: DataTypes.STRING
-        }
+        password_hash: {
+            type: DataTypes.STRING(255),
+            allowNull: false,
+        },
+        role: {
+            type: DataTypes.ENUM('player', 'developer', 'publisher', 'admin'),
+            allowNull: false,
+            defaultValue: 'player',
+        },
+        created_at: {
+            type: DataTypes.DATE,
+            allowNull: false,
+            defaultValue: DataTypes.NOW,
+        },
+        last_login: {
+            type: DataTypes.DATE,
+        },
+    }, {
+        timestamps: false,
+        tableName: 'users',
     });
 
-    User.associate = models => {
-        User.belongsToMany(models.Game, {
-            through: 'UserGames',
-            as: 'games',
-            foreignKey: 'userId'
+
+    // Associations
+    User.associate = (models) => {
+        User.hasOne(models.Developer, { foreignKey: 'user_id' });
+        User.hasOne(models.Publisher, { foreignKey: 'user_id' });
+        User.hasOne(models.Cart, { foreignKey: 'user_id' });
+        User.hasOne(models.Wishlist, { foreignKey: 'user_id' });
+        User.hasMany(models.Review, { foreignKey: 'user_id' });
+        User.hasMany(models.LibraryGame, { foreignKey: 'user_id' });
+        User.hasMany(models.Guide, { foreignKey: 'user_id' });
+        User.hasMany(models.ForumPost, { foreignKey: 'user_id' });
+        User.belongsToMany(models.Group, {
+            through: models.GroupMember,
+            foreignKey: 'user_id',
+            as: 'Groups'
         });
-        User.belongsToMany(models.User, {
-            through: 'UserFriends',
-            as: 'friends',
-            foreignKey: 'userId',
-            otherKey: 'friendId'
-        });
-        User.belongsToMany(models.Community, {
-            through: 'UserCommunities',
-            as: 'communities',
-            foreignKey: 'userId'
-        });
-        User.hasMany(models.SupportTicket, {
-            foreignKey: 'userId',
-            as: 'supportTickets'
+
+        User.hasMany(models.GroupPost, { foreignKey: 'user_id' });
+        User.belongsToMany(models.GameAchievements, {
+            through: models.UserAchievements,
+            foreignKey: 'user_id',
+            as: 'Achievements'
         });
     };
 
     return User;
-};
+}
