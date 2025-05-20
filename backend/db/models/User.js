@@ -16,14 +16,14 @@ export default (sequelize, DataTypes) => {
             unique: true,
             validate: {isEmail: true},
         },
-        password_hash: {
+        password: {
             type: DataTypes.STRING(255),
             allowNull: false,
         },
         role: {
-            type: DataTypes.ENUM('player', 'developer', 'publisher', 'admin'),
+            type: DataTypes.ENUM('USER', 'DEVELOPER', 'PUBLISHER', 'ADMIN'),
             allowNull: false,
-            defaultValue: 'player',
+            defaultValue: 'USER',
         },
         created_at: {
             type: DataTypes.DATE,
@@ -37,6 +37,8 @@ export default (sequelize, DataTypes) => {
         timestamps: false,
         tableName: 'users',
     });
+
+
 
 
     // Associations

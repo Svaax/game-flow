@@ -25,9 +25,6 @@ import UserAchievements from './models/UserAchievements.js';
 import Wishlist from './models/Wishlist.js';
 import WishlistGame from './models/WishlistGame.js';
 
-
-
-
 dotenv.config();
 
 const sequelize = new Sequelize(
@@ -43,8 +40,8 @@ const sequelize = new Sequelize(
                 {console.log(msg);}
         },
         define: {
-            timestamps: false, // Adds createdAt and updatedAt fields
-            underscored: true, // Converts camelCase to snake_case
+            timestamps: false,
+            underscored: true,
         }
     }
 )

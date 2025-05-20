@@ -37,7 +37,6 @@ export default (sequelize, DataTypes) => {
 
     GuideComment.associate = (models) => {
         GuideComment.belongsTo(models.Guide, { foreignKey: 'guide_id' });
-
         GuideComment.belongsTo(models.User, { foreignKey: 'user_id' });
     };
 

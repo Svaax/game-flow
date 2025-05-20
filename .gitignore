@@ -18,3 +18,5 @@
 /client/yarn-error.log*
 
 node_modules/
+/backend/routes/router.zsh
+/мысли.txt
