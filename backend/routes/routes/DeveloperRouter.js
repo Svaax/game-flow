@@ -1,9 +1,12 @@
-// DeveloperRouter.js
-const express = require("express");
-const router = express.Router();
-const DeveloperController = require("../controllers/DeveloperController");
+import { Router } from 'express';
+import { DeveloperController } from '../../controllers/DeveloperController.js';
 
-// Add your routes here
+const router = Router();
 
-module.exports = router;
+router.get('/', DeveloperController.getAll);
+router.get('/:id', DeveloperController.getById);
+router.post('/', DeveloperController.create);
+router.put('/:id', DeveloperController.update);
+router.delete('/:id', DeveloperController.delete);
 
+export default router;

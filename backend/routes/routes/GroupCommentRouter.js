@@ -1,9 +1,12 @@
-// GroupCommentRouter.js
-const express = require("express");
-const router = express.Router();
-const GroupCommentController = require("../controllers/GroupCommentController");
+import { Router } from 'express';
+import { GroupCommentController } from '../../controllers/GroupCommentController.js';
 
-// Add your routes here
+const router = Router();
 
-module.exports = router;
+router.get('/post/:post_id', GroupCommentController.getByPost);
+// router.get('/:id', GroupCommentController.getById);
+router.post('/', GroupCommentController.create);
+// router.put('/:id', GroupCommentController.update);
+// router.delete('/:id', GroupCommentController.delete);
 
+export default router;

@@ -11,12 +11,14 @@ function generateToken(id, username, password, role) {
 
 const ROLES = ['USER', 'ADMIN', 'DEVELOPER', 'PUBLISHER'];
 
-class UserController {
 
-    //signup and login functions (by default assign role 'USER')
+export class UserController {
+
+    // signup and login functions (by default assign role 'USER')
     // are available to user via ./login and ./signup,
     // others only to admin
-    async signup(req, res, next) {
+
+    static async signup(req, res, next) {
         const {username, password, email, role = 'USER'} = req.body;
         try {
             if (!email || !password || !username) {
@@ -34,19 +36,13 @@ class UserController {
         }
     }
 
-    async login(req, res, next) {
+    static async login(req, res, next) {
         const { email, username, password } = req.body;
 
         try {
-            // 1. Validate input
-            if (!(email || username)) {
-                throw new Error('Email or username is required');
-            }
-            if (!password) {
-                throw new Error('Password is required');
-            }
+            if (!(email || username)) { throw new Error('Email or username is required'); }
+            if (!password) { throw new Error('Password is required'); }
 
-            // 2. Correct user lookup query
             const user = await models.User.findOne({
                 where: {
                     [Op.or]: [
@@ -56,15 +52,10 @@ class UserController {
                 }
             });
 
-            if (!user) {
-                throw new Error('User not found');
-            }
+            if (!user) { throw new Error('User not found'); }
 
-            // 3. Verify password
             const isPasswordValid = await bcrypt.compare(password, user.password);
-            if (!isPasswordValid) {
-                throw new Error('Incorrect password');
-            }
+            if (!isPasswordValid) { throw new Error('Incorrect password'); }
 
             // 4. Prepare response
             const userData = {
@@ -86,7 +77,7 @@ class UserController {
     }
 
     // available to admin, allow to create/update/delete devs, publishers and admins accounts
-    async create(req, res, next) {
+    static async create(req, res, next) {
         const {username, email, password, role = 'USER'} = req.body
         try {
             if (!email || !password) {
@@ -103,7 +94,7 @@ class UserController {
         }
     }
 
-    async update(req, res, next) {
+    static async update(req, res, next) {
         try {
             const { id } = req.params;
             const updates = req.body;
@@ -139,7 +130,7 @@ class UserController {
         }
     }
 
-    async delete(req, res, next) {
+    static async delete(req, res, next) {
         try {
             if (!req.params.id) {
                 throw new Error('User id is not specified')
@@ -152,9 +143,8 @@ class UserController {
             next(ApiError.badRequest(e.message))
         }
     }
-        async getAll(req, res, next) {
-            const users = await models.User.findAll();
-            return res.json(users)
+    static async getAll(req, res, next) {
+        const users = await models.User.findAll();
+        return res.json(users)
     }
 }
-export default new UserController();

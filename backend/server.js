@@ -1,3 +1,4 @@
+import path from 'path';
 import express from 'express';
 import cors from 'cors';
 import helmet from 'helmet';
@@ -17,6 +18,7 @@ app.use(express.json()); // allows to parse json from req/res
 app.use(cors())
 app.use(helmet()); // middleware serving security purposes, by adding tags to http headers
 app.use(morgan('dev')) // req logs
+app.use('/uploads', express.static(path.join(path.resolve(), 'uploads')));
 
 app.use('/api', router)
 
@@ -38,7 +40,7 @@ async function initializeDatabase() {
     }
 }
 
-initializeDatabase();
 
+initializeDatabase();
 
 app.listen(PORT, () => {console.log(`App is running on port ${PORT}`)})

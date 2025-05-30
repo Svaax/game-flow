@@ -1,9 +1,12 @@
-// GroupPostRouter.js
-const express = require("express");
-const router = express.Router();
-const GroupPostController = require("../controllers/GroupPostController");
+import { Router } from 'express';
+import { GroupPostController } from '../../controllers/GroupPostController.js';
 
-// Add your routes here
+const router = Router();
 
-module.exports = router;
+// router.get('/group/:group_id', GroupPostController.getByGroup);
+// router.get('/:id', GroupPostController.getById);
+router.post('/', GroupPostController.create);
+// router.put('/:id', GroupPostController.update);
+// router.delete('/:id', GroupPostController.delete);
 
+export default router;

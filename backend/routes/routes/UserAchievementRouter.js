@@ -1,9 +1,10 @@
-// UserAchievementRouter.js
-const express = require("express");
-const router = express.Router();
-const UserAchievementController = require("../controllers/UserAchievementController");
+import { Router } from 'express';
+import { UserAchievementsController } from '../../controllers/UserAchievementsController.js';
 
-// Add your routes here
+const router = Router();
 
-module.exports = router;
+router.get('/', UserAchievementsController.getAll);
+router.get('/user/:user_id', UserAchievementsController.getByUser);
+router.post('/', UserAchievementsController.create);
 
+export default router;

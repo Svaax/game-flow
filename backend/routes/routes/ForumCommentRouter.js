@@ -1,9 +1,12 @@
-// ForumCommentRouter.js
-const express = require("express");
-const router = express.Router();
-const ForumCommentController = require("../controllers/ForumCommentController");
+import { Router } from 'express';
+import { ForumCommentController } from '../../controllers/ForumCommentController.js';
 
-// Add your routes here
+const router = Router();
 
-module.exports = router;
+router.get('/post/:post_id', ForumCommentController.getByPost); // Comments on forum post
+// router.get('/:id', ForumCommentController.getById);
+router.post('/', ForumCommentController.create);
+// router.put('/:id', ForumCommentController.update);
+// router.delete('/:id', ForumCommentController.delete);
 
+export default router;

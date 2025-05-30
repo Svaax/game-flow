@@ -1,9 +1,12 @@
-// WishlistRouter.js
-const express = require("express");
-const router = express.Router();
-const WishlistController = require("../../controllers/WishlistController");
+import { Router } from 'express';
+import { WishlistController } from '../../controllers/WishlistController.js';
 
-// Add your routes here
+const router = Router();
 
-module.exports = router;
+router.get('/', WishlistController.getAll);
+router.get('/:id', WishlistController.getById);
+// router.get('/user/:user_id', WishlistController.getByUser);
+router.post('/', WishlistController.create);
+router.delete('/:id', WishlistController.delete);
 
+export default router;

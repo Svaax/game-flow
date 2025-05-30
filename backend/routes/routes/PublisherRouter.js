@@ -1,9 +1,12 @@
-// PublisherRouter.js
-const express = require("express");
-const router = express.Router();
-const PublisherController = require("../controllers/PublisherController");
+import { Router } from 'express';
+import { PublisherController } from '../../controllers/PublisherController.js';
 
-// Add your routes here
+const router = Router();
 
-module.exports = router;
+router.get('/', PublisherController.getAll);
+router.get('/:id', PublisherController.getById);
+router.post('/', PublisherController.create);
+router.put('/:id', PublisherController.update);
+router.delete('/:id', PublisherController.delete);
 
+export default router;

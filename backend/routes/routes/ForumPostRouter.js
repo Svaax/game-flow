@@ -1,9 +1,13 @@
-// ForumPostRouter.js
-const express = require("express");
-const router = express.Router();
-const ForumPostController = require("../controllers/ForumPostController");
+import { Router } from 'express';
+import { ForumPostController } from '../../controllers/ForumPostController.js';
 
-// Add your routes here
+const router = Router();
 
-module.exports = router;
+router.get('/', ForumPostController.getAllPosts);
+// router.get('/:id', ForumPostController.getById);
+// router.get('/user/:user_id', ForumPostController.getByUser);
+router.post('/', ForumPostController.createPost);
+// router.put('/:id', ForumPostController.update);
+// router.delete('/:id', ForumPostController.delete);
 
+export default router;

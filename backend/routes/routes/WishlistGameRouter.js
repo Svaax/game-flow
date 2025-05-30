@@ -1,9 +1,10 @@
-// WishlistGameRouter.js
-const express = require("express");
-const router = express.Router();
-const WishlistGameController = require("../controllers/WishlistGameController");
+import { Router } from 'express';
+import { WishlistGameController } from '../../controllers/WishlistGameController.js';
 
-// Add your routes here
+const router = Router();
 
-module.exports = router;
+router.get('/wishlist/:wishlist_id', WishlistGameController.getWishlistGames);
+router.post('/', WishlistGameController.addGame);
+router.delete('/:wishlist_id/:game_id', WishlistGameController.removeGame);
 
+export default router;

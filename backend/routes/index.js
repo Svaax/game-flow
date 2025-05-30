@@ -1,14 +1,51 @@
 import express from 'express';
-const router = new express(); //contains all the routes
-// import routers
-import UserRouter from './routes/UserRouter.js';
-// import GameRouter from './routes/GameRouter.js';
-// import DeveloperRouter from './routes/DeveloperRouter.js';
-// import PublisherRouter from './routes/PublisherRouter.js';
+const router = new express();
 
+import CartGameRouter from './routes/CartGameRouter.js';
+import CartRouter from './routes/CartRouter.js';
+import DeveloperRouter from './routes/DeveloperRouter.js';
+import ForumCommentRouter from './routes/ForumCommentRouter.js';
+import ForumPostRouter from './routes/ForumPostRouter.js';
+import GameAchievementRouter from './routes/GameAchievementRouter.js';
+import GameRouter from './routes/GameRouter.js';
+import GameTagRouter from './routes/GameTagRouter.js';
+import GroupCommentRouter from './routes/GroupCommentRouter.js';
+import GroupMemberRouter from './routes/GroupMemberRouter.js';
+import GroupPostRouter from './routes/GroupPostRouter.js';
+import GroupRouter from './routes/GroupRouter.js';
+import GuideCommentRouter from './routes/GuideCommentRouter.js';
+import GuideRouter from './routes/GuideRouter.js';
+import LibraryGameRouter from './routes/LibraryGameRouter.js';
+import PublisherRouter from './routes/PublisherRouter.js';
+import ReviewRouter from './routes/ReviewRouter.js';
+import TagRouter from './routes/TagRouter.js';
+import UserAchievementRouter from './routes/UserAchievementRouter.js';
+import UserRouter from './routes/UserRouter.js';
+import WishlistGameRouter from './routes/WishlistGameRouter.js';
+import WishlistRouter from './routes/WishlistRouter.js';
+
+router.use('/cart-games', CartGameRouter);
+router.use('/carts', CartRouter);
+router.use('/developers', DeveloperRouter);
+router.use('/forum-comments', ForumCommentRouter);
+router.use('/forum-posts', ForumPostRouter);
+router.use('/game-achievements', GameAchievementRouter);
+router.use('/games', GameRouter);
+router.use('/game-tags', GameTagRouter);
+router.use('/group-comments', GroupCommentRouter);
+router.use('/group-members', GroupMemberRouter);
+router.use('/group-posts', GroupPostRouter);
+router.use('/groups', GroupRouter);
+router.use('/guide-comments', GuideCommentRouter);
+router.use('/guides', GuideRouter);
+router.use('/library-games', LibraryGameRouter);
+router.use('/publishers', PublisherRouter);
+router.use('/reviews', ReviewRouter);
+router.use('/tags', TagRouter);
+router.use('/user-achievements', UserAchievementRouter);
 router.use('/users', UserRouter);
-// router.use('./game', GameRouter);
-// router.use('./developer', DeveloperRouter);
-// router.use('./publisher', PublisherRouter);
+router.use('/wishlist-games', WishlistGameRouter);
+router.use('/wishlists', WishlistRouter);
+
 
 export default router;

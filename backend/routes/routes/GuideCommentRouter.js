@@ -1,9 +1,12 @@
-// GuideCommentRouter.js
-const express = require("express");
-const router = express.Router();
-const GuideCommentController = require("../controllers/GuideCommentController");
+import { Router } from 'express';
+import { GuideCommentController } from '../../controllers/GuideCommentController.js';
 
-// Add your routes here
+const router = Router();
 
-module.exports = router;
+router.get('/guide/:guide_id', GuideCommentController.getByGuide);
+// router.get('/:id', GuideCommentController.getById);
+router.post('/', GuideCommentController.create);
+// router.put('/:id', GuideCommentController.update);
+// router.delete('/:id', GuideCommentController.delete);
 
+export default router;

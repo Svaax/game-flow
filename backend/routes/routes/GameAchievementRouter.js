@@ -1,9 +1,10 @@
-// GameAchievementRouter.js
-const express = require("express");
-const router = express.Router();
-const GameAchievementController = require("../controllers/GameAchievementController");
+import { Router } from 'express';
+import { GameAchievementController } from '../../controllers/GameAchievementController.js';
 
-// Add your routes here
+const router = Router();
 
-module.exports = router;
+router.get('/', GameAchievementController.getAll);
+router.get('/game/:game_id', GameAchievementController.getByGame);
+router.post('/', GameAchievementController.create);
 
+export default router;

@@ -1,9 +1,10 @@
-// GameTagRouter.js
-const express = require("express");
-const router = express.Router();
-const GameTagController = require("../controllers/GameTagController");
+import { Router } from 'express';
+import { GameTagController } from '../../controllers/GameTagController.js';
 
-// Add your routes here
+const router = Router();
 
-module.exports = router;
+// router.get('/game/:game_id', GameTagController.getByGame);
+router.post('/', GameTagController.addTagToGame);
+router.delete('/:game_id/:tag_id', GameTagController.removeTagFromGame);
 
+export default router;

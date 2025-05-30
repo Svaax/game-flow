@@ -1,9 +1,12 @@
-// CartGameRouter.js
-const express = require("express");
+import express from 'express';
+import { CartGameController } from '../../controllers/CartGameController.js';
+
 const router = express.Router();
-const CartGameController = require("../controllers/CartGameController");
 
-// Add your routes here
+router.get('/', CartGameController.getAllCartGames);
+router.get('/:id', CartGameController.getCartGameById);
+router.post('/', CartGameController.addGameToCart);
+router.put('/:id', CartGameController.updateCartGame);
+router.delete('/:id', CartGameController.removeGameFromCart);
 
-module.exports = router;
-
+export default router;

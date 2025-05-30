@@ -1,9 +1,14 @@
-// GuideRouter.js
-const express = require("express");
-const router = express.Router();
-const GuideController = require("../controllers/GuideController");
+import { Router } from 'express';
+import { GuideController } from '../../controllers/GuideController.js';
 
-// Add your routes here
+const router = Router();
 
-module.exports = router;
+router.get('/', GuideController.getAll);
+router.get('/:id', GuideController.getById);
+// router.get('/game/:game_id', GuideController.getByGame);
+// router.get('/user/:user_id', GuideController.getByUser);
+router.post('/', GuideController.create);
+router.put('/:id', GuideController.update);
+router.delete('/:id', GuideController.delete);
 
+export default router;

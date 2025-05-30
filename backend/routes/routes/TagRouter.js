@@ -1,9 +1,10 @@
-// TagRouter.js
-const express = require("express");
-const router = express.Router();
-const TagController = require("../controllers/TagController");
+import { Router } from 'express';
+import { TagController } from '../../controllers/TagController.js';
 
-// Add your routes here
+const router = Router();
 
-module.exports = router;
+router.get('/', TagController.getAllTags);
+router.post('/', TagController.createTag);
+router.delete('/:id', TagController.deleteTag);
 
+export default router;
