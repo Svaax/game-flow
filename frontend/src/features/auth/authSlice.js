@@ -2,9 +2,9 @@ import { createSlice } from '@reduxjs/toolkit'
 import { Roles } from '../../shared/constants.js'
 
 const initialState = {
-    user: null,
-    token: null,
-    status: 'idle', // 'idle' | 'loading' | 'succeeded' | 'failed'
+    user: JSON.parse(localStorage.getItem('user')) || null,
+    token: localStorage.getItem('token') || null,
+    status: 'idle',
     error: null
 }
 
@@ -16,17 +16,22 @@ const authSlice = createSlice({
             const { user, token } = action.payload
             state.user = user
             state.token = token
+
+            localStorage.setItem('user', JSON.stringify(user))
+            localStorage.setItem('token', token)
         },
         logout: (state) => {
             state.user = null
             state.token = null
+
+            localStorage.removeItem('user')
+            localStorage.removeItem('token')
         }
     }
 })
 
 export const { setCredentials, logout } = authSlice.actions
 
-// Селекторы
 export const selectCurrentUser = (state) => state.auth.user
 export const selectCurrentToken = (state) => state.auth.token
 export const selectUserRole = (state) =>

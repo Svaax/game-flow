@@ -1,26 +1,25 @@
-import { apiSlice } from '../../shared/api/apiSlice'
+import { apiSlice } from '../../shared/api/apiSlice.js'
 
-export const authApiSlice = apiSlice.injectEndpoints({
+export const authApi = apiSlice.injectEndpoints({
     endpoints: builder => ({
         login: builder.mutation({
             query: credentials => ({
-                url: '/auth/login',
+                url: '/users/login',
                 method: 'POST',
-                body: credentials
+                body: credentials,
             })
         }),
         register: builder.mutation({
             query: userData => ({
-                url: '/auth/register',
+                url: '/users/signup',
                 method: 'POST',
                 body: userData
             })
         }),
-        // ... другие endpoints
     })
 })
 
 export const {
     useLoginMutation,
     useRegisterMutation
-} = authApiSlice
+} = authApi

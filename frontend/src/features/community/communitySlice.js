@@ -65,9 +65,11 @@ const communitySlice = createSlice({
 })
 
 export const { addForumPost, addGuide } = communitySlice.actions
-export default communitySlice.reducer
 
 // Селекторы
 export const selectForumPosts = (state) => state.community.forumPosts
 export const selectGuides = (state) => state.community.guides
 export const selectCommunityStatus = (state) => state.community.status
+
+
+export default communitySlice.reducer

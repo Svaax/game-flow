@@ -3,7 +3,7 @@ const PageNotFound = () => {
 
         return (
             <div>
-                page not found
+                Страница не была найдена
             </div>
         );
 }

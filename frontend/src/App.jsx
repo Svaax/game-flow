@@ -4,7 +4,6 @@ import { Toaster } from 'react-hot-toast';
 import Header from './shared/components/Header';
 import Footer from './shared/components/Footer';
 import HomePage from './pages/HomePage';
-import ShopPage from './pages/ShopPage';
 import GamePage from './pages/GamePage.jsx';
 import Cart from './features/shop/Cart.jsx';
 import LibraryPage from './pages/LibraryPage.jsx';
@@ -28,7 +27,6 @@ function App() {
                     <Routes>
                         {/* Public routes */}
                         <Route path="/" element={<HomePage />} />
-                        <Route path="/shop" element={<ShopPage />} />
                         <Route path="/game/:id" element={<GamePage />} />
                         <Route path="/community" element={<CommunityPage />} />
                         <Route path="/forum" element={<ForumPage />} />
@@ -38,7 +36,7 @@ function App() {
                         <Route element={<PrivateRoute />}>
                             <Route path="/cart" element={<Cart />} />
                             <Route path="/library" element={<LibraryPage />} />
-                            <Route path="/wishlist" element={<div>Wishlist Page</div>} />
+                            {/*<Route path="/wishlist" element={<WishlistPage/>} />*/}
                         </Route>
 
                         {/* Admin routes */}

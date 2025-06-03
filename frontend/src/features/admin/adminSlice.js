@@ -68,10 +68,10 @@ const adminSlice = createSlice({
 })
 
 export const { updateGame, deleteGame } = adminSlice.actions
-export default adminSlice.reducer
 
-// Селекторы
 export const selectAdminGames = (state) => state.admin.games
 export const selectAdminUsers = (state) => state.admin.users
 export const selectAdminStats = (state) => state.admin.stats
 export const selectAdminStatus = (state) => state.admin.status
+
+export default adminSlice.reducer

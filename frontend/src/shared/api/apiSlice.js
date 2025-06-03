@@ -1,7 +1,10 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 
+const baseUrl="http://localhost:5000/api"
+
+
 const baseQuery = fetchBaseQuery({
-    baseUrl: process.env.REACT_APP_API_URL,
+    baseUrl,
     prepareHeaders: (headers, { getState }) => {
         const token = getState().auth.token
         if (token) {
@@ -11,8 +14,33 @@ const baseQuery = fetchBaseQuery({
     }
 })
 
+const tagTypes = [
+    'CartGame',
+    'Cart',
+    'Developer',
+    'ForumComment',
+    'ForumPost',
+    'GameAchievement',
+    'Game',
+    'GameTag',
+    'GroupComment',
+    'GroupMember',
+    'GroupPost',
+    'Group',
+    'GuideComment',
+    'Guide',
+    'LibraryGame',
+    'Publisher',
+    'Review',
+    'Tag',
+    'UserAchievement',
+    'User',
+    'WishlistGame',
+    'Wishlist'
+];
+
 export const apiSlice = createApi({
     baseQuery,
-    tagTypes: ['Game', 'Review', 'ForumPost'],
+    tagTypes,
     endpoints: () => ({})
 })

@@ -1,17 +1,17 @@
-import { apiSlice } from '../..//shared/api/apiSlice.js'
+import { apiSlice } from '../../shared/api/apiSlice.js'
 
 export const communityAPI = apiSlice.injectEndpoints({
     endpoints: (builder) => ({
         getForumPosts: builder.query({
             query: ({ page = 1, limit = 10 }) => ({
-                url: '/forum/posts',
+                url: '/forum-posts',
                 params: { page, limit }
             }),
             providesTags: ['ForumPost']
         }),
         createForumPost: builder.mutation({
             query: (post) => ({
-                url: '/forum/posts',
+                url: '/forum-posts',
                 method: 'POST',
                 body: post
             }),

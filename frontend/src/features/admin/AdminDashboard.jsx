@@ -2,11 +2,10 @@ import { useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { fetchAllGames, fetchAllUsers } from './adminSlice'
 import { selectAdminStats, selectAdminStatus } from './adminSlice'
-// import StatsCard from '../components/StatsCard'
 import LoadingSpinner from '../../shared/components/LoadingSpinner'
 import { Tab } from '@headlessui/react'
-// import GamesTable from './components/GamesTable'
-// import UsersTable from './components/UsersTable'
+import GamesTable from './components/GamesTable'
+import UsersTable from './components/UsersTable'
 
 const AdminDashboard = () => {
     const dispatch = useDispatch()
@@ -22,26 +21,7 @@ const AdminDashboard = () => {
 
     return (
         <div className="container mx-auto px-4 py-8">
-            <h1 className="text-3xl font-bold mb-6">{('adminPanel')}</h1>
-
-            {/* Статистика */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-                {/*<StatsCard*/}
-                {/*    title={('totalGames')}*/}
-                {/*    value={stats.totalGames}*/}
-                {/*    icon="🎮"*/}
-                {/*/>*/}
-                {/*<StatsCard*/}
-                {/*    title={('totalUsers')}*/}
-                {/*    value={stats.totalUsers}*/}
-                {/*    icon="👥"*/}
-                {/*/>*/}
-                {/*<StatsCard*/}
-                {/*    title={('activeUsers')}*/}
-                {/*    value={stats.activeUsers}*/}
-                {/*    icon="🟢"*/}
-                {/*/>*/}
-            </div>
+            <h1 className="text-3xl font-bold mb-6">adminPanel</h1>
 
             {/* Табы управления */}
             <Tab.Group>
@@ -64,10 +44,10 @@ const AdminDashboard = () => {
 
                 <Tab.Panels>
                     <Tab.Panel>
-                        {/*<GamesTable />*/}
+                        <GamesTable />
                     </Tab.Panel>
                     <Tab.Panel>
-                        {/*<UsersTable />*/}
+                        <UsersTable />
                     </Tab.Panel>
                 </Tab.Panels>
             </Tab.Group>

@@ -1,4 +1,3 @@
-
 const Footer = () => {
 
     return (
@@ -8,40 +7,31 @@ const Footer = () => {
                     <div>
                         <h3 className="text-xl font-bold mb-4">GameFlow</h3>
                         <p className="text-gray-400">
-                            {('footer.description')}
+                            Предоставляет удобный интерфейс для покупки, управления и запуска игр,
+                            а разработчикам — эффективный инструмент для публикации и монетизации своих продуктов.
                         </p>
                     </div>
 
                     <div>
-                        <h4 className="font-bold mb-4">{('shop')}</h4>
+                        <h4 className="font-bold mb-4">Магазин</h4>
                         <ul className="space-y-2 text-gray-400">
-                            <li><a href="#" className="hover:text-white">{('games')}</a></li>
-                            <li><a href="#" className="hover:text-white">{('sales')}</a></li>
-                            <li><a href="#" className="hover:text-white">{('newReleases')}</a></li>
+                            <li><a href="#" className="hover:text-white">Игры</a></li>
+                            <li><a href="#" className="hover:text-white">Скидки</a></li>
+                            <li><a href="#" className="hover:text-white">Новые релизы</a></li>
                         </ul>
                     </div>
-
                     <div>
-                        <h4 className="font-bold mb-4">{('community')}</h4>
+                        <h4 className="font-bold mb-4">Сообщество</h4>
                         <ul className="space-y-2 text-gray-400">
-                            <li><a href="#" className="hover:text-white">{('forum')}</a></li>
-                            <li><a href="#" className="hover:text-white">{('guides')}</a></li>
-                            <li><a href="#" className="hover:text-white">{('groups')}</a></li>
-                        </ul>
-                    </div>
-
-                    <div>
-                        <h4 className="font-bold mb-4">{('support')}</h4>
-                        <ul className="space-y-2 text-gray-400">
-                            <li><a href="#" className="hover:text-white">{('helpCenter')}</a></li>
-                            <li><a href="#" className="hover:text-white">{('contactUs')}</a></li>
-                            <li><a href="#" className="hover:text-white">{('privacyPolicy')}</a></li>
+                            <li><a href="#" className="hover:text-white">Форум</a></li>
+                            <li><a href="#" className="hover:text-white">Гайды</a></li>
+                            <li><a href="#" className="hover:text-white">Группы</a></li>
                         </ul>
                     </div>
                 </div>
 
                 <div className="border-t border-gray-800 mt-8 pt-6 text-center text-gray-400">
-                    <p>© {new Date().getFullYear()} GameFlow. {('footer.rights')}</p>
+                    <p>© {new Date().getFullYear()} GameFlow. Все права защищены</p>
                 </div>
             </div>
         </footer>

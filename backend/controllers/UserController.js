@@ -30,9 +30,9 @@ export class UserController {
             const user = await models.User.create(userData);
 
             const token  = generateToken(user.user_id, user.username, user.password, user.role);
-            return res.json({token})
+            return res.json({user, token})
         } catch(e) {
-            next(ApiError.badRequest(e.message));
+            return res.status(400).json({ message: e.message });
         }
     }
 
@@ -68,11 +68,10 @@ export class UserController {
             // 5. Generate token
             const token = generateToken(userData);
 
-            return res.json({ token });
+            return res.json({user: userData, token})
 
-        } catch (error) {
-            // 6. Proper error handling
-            next(new ApiError(400, error.message)); // Fixed ApiError usage
+        } catch (e) {
+            return res.status(400).json({ message: e.message });
         }
     }
 

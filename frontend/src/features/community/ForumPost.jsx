@@ -1,5 +1,4 @@
 import { Link } from 'react-router-dom'
-// import VoteButtons from './VoteButtons'
 
 const ForumPost = ({ post }) => {
     const date = new Date(post.createdAt).toLocaleDateString()
@@ -7,8 +6,6 @@ const ForumPost = ({ post }) => {
     return (
         <div className="bg-white p-6 rounded-lg shadow">
             <div className="flex items-start gap-4">
-                {/*<VoteButtons postId={post.id} initialVotes={post.votes} />*/}
-
                 <div className="flex-1">
                     <Link to={`/forum/post/${post.id}`} className="hover:underline">
                         <h3 className="text-xl font-semibold mb-2">{post.title}</h3>

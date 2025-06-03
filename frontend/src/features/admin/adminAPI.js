@@ -2,6 +2,7 @@ import { apiSlice } from '../../shared/api/apiSlice.js'
 
 export const adminAPI = apiSlice.injectEndpoints({
     endpoints: (builder) => ({
+        // Games endpoints
         getAllGames: builder.query({
             query: () => '/admin/games',
             providesTags: ['AdminGame']
@@ -12,15 +13,16 @@ export const adminAPI = apiSlice.injectEndpoints({
                 method: 'PUT',
                 body: gameData
             }),
-            invalidatesTags: ['AdminGame', 'Game']
+            invalidatesTags: ['Game']
         }),
         deleteGame: builder.mutation({
             query: (id) => ({
                 url: `/admin/games/${id}`,
                 method: 'DELETE'
             }),
-            invalidatesTags: ['AdminGame', 'Game']
+            invalidatesTags: ['Game']
         }),
+        // User endpoints
         getAllUsers: builder.query({
             query: () => '/admin/users',
             providesTags: ['User']

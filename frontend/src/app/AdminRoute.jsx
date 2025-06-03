@@ -5,17 +5,17 @@ import { Roles } from '../shared/constants'
 import LoadingSpinner from '../shared/components/LoadingSpinner'
 
 const AdminRoute = ({ children }) => {
-    // const role = useSelector(selectUserRole)
-    // const location = useLocation()
+    const role = useSelector(selectUserRole)
+    const location = useLocation()
 
     if (role === null) {
-        // Еще не загрузились данные пользователя
+
         return <LoadingSpinner />
     }
 
-    // if (role !== Roles.ADMIN) {
+    if (role !== Roles.ADMIN) {
         return <Navigate to="/" state={{ from: location }} replace />
-    // }
+    }
 
     return children
 }
