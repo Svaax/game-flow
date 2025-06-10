@@ -142,8 +142,18 @@ export class UserController {
             next(ApiError.badRequest(e.message))
         }
     }
-    static async getAll(req, res, next) {
+    static async getAllUsers(req, res) {
         const users = await models.User.findAll();
         return res.json(users)
+    }
+
+    static async getUserById(req, res, next) {
+    try {
+        const user = await models.User.findByPk(req.params.id);
+        if (!user) return res.status(404).json({ error: 'User not found' });
+        res.json(user);
+    } catch (error) {
+        res.status(500).json({ error: 'Failed to fetch game' });
+    }
     }
 }

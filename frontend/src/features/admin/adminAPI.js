@@ -4,12 +4,13 @@ export const adminAPI = apiSlice.injectEndpoints({
     endpoints: (builder) => ({
         // Games endpoints
         getAllGames: builder.query({
-            query: () => '/admin/games',
-            providesTags: ['AdminGame']
+            query: () => '/games',
+            providesTags: ['Game']
         }),
         updateGame: builder.mutation({
+            // data that can be updated: title, description, price, release_date, cover_image, is_active
             query: ({ id, gameData }) => ({
-                url: `/admin/games/${id}`,
+                url: `/games/${id}`,
                 method: 'PUT',
                 body: gameData
             }),
@@ -17,23 +18,27 @@ export const adminAPI = apiSlice.injectEndpoints({
         }),
         deleteGame: builder.mutation({
             query: (id) => ({
-                url: `/admin/games/${id}`,
+                url: `/games/${id}`,
                 method: 'DELETE'
             }),
             invalidatesTags: ['Game']
         }),
         // User endpoints
         getAllUsers: builder.query({
-            query: () => '/admin/users',
+            query: () => '/users',
             providesTags: ['User']
         }),
-        updateUserRole: builder.mutation({
-            query: ({ userId, role }) => ({
-                url: `/admin/users/${userId}/role`,
+        updateUser: builder.mutation({
+            query: ({ userId, userData }) => ({
+                url: `/users/${userId}`,
                 method: 'PUT',
-                body: { role }
+                body: userData
             }),
             invalidatesTags: ['User']
+        }),
+        deleteUser: builder.mutation({
+            query: (userId) => `/users/${userId}`,
+            method: 'DELETE'
         })
     })
 })
@@ -43,5 +48,6 @@ export const {
     useUpdateGameMutation,
     useDeleteGameMutation,
     useGetAllUsersQuery,
-    useUpdateUserRoleMutation
+    useUpdateUserMutation,
+    useDeleteUserMutation
 } = adminAPI

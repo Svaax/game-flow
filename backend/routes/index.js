@@ -24,28 +24,35 @@ import UserRouter from './routes/UserRouter.js';
 import WishlistGameRouter from './routes/WishlistGameRouter.js';
 import WishlistRouter from './routes/WishlistRouter.js';
 
-router.use('/cart-games', CartGameRouter);
-router.use('/carts', CartRouter);
-router.use('/developers', DeveloperRouter);
-router.use('/forum-comments', ForumCommentRouter);
-router.use('/forum-posts', ForumPostRouter);
-router.use('/game-achievements', GameAchievementRouter);
-router.use('/games', GameRouter);
-router.use('/game-tags', GameTagRouter);
-router.use('/group-comments', GroupCommentRouter);
-router.use('/group-members', GroupMemberRouter);
-router.use('/group-posts', GroupPostRouter);
-router.use('/groups', GroupRouter);
-router.use('/guide-comments', GuideCommentRouter);
-router.use('/guides', GuideRouter);
-router.use('/library-games', LibraryGameRouter);
-router.use('/publishers', PublisherRouter);
-router.use('/reviews', ReviewRouter);
-router.use('/tags', TagRouter);
-router.use('/user-achievements', UserAchievementRouter);
 router.use('/users', UserRouter);
-router.use('/wishlist-games', WishlistGameRouter);
-router.use('/wishlists', WishlistRouter);
+// router.use('/users/:userId/library', LibraryGameRouter);
+// router.use('/users/:userId/achievements', UserAchievementRouter);
+router.use('/users/:userId/wishlist', WishlistGameRouter);
+router.use('/users/:userId/cart', CartGameRouter);
+
+
+router.use('/games', GameRouter);
+router.use('/games/:gameId/reviews', ReviewRouter);
+// router.use('/games/:gameId/achievements', GameAchievementRouter);
+
+router.use('/cart', CartRouter);
+router.use('/wishlist', WishlistRouter);
+
+router.use('/groups', GroupRouter);
+router.use('/groups/:groupId/posts', GroupPostRouter);
+// router.use('/groups/:groupId/members', GroupMemberRouter);
+// router.use('/groups/:groupId/comments', GroupCommentRouter);
+
+router.use('/forum', ForumPostRouter);
+// router.use('/forum/:postId/comments', ForumCommentRouter);
+
+router.use('/guides', GuideRouter);
+// router.use('/guides/:guideId/comments', GuideCommentRouter);
+
+router.use('/developers', DeveloperRouter);
+router.use('/publishers', PublisherRouter);
+// router.use('/tags', TagRouter);
+// router.use('/game-tags', GameTagRouter);
 
 
 export default router;

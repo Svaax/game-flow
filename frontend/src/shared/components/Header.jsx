@@ -1,6 +1,7 @@
 import { Link, NavLink } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { selectCurrentUser } from '../../features/auth/authSlice';
+import CommunityNavItem from "./CommunityNavItem.jsx";
 
 const Header = () => {
     const user = useSelector(selectCurrentUser);
@@ -20,14 +21,7 @@ const Header = () => {
                     >
                         {('shop')}
                     </NavLink>
-                    <NavLink
-                        to="/community"
-                        className={({ isActive }) =>
-                            `hover:text-gray-300 ${isActive ? 'text-blue-400' : 'text-white'}`
-                        }
-                    >
-                        {('community')}
-                    </NavLink>
+                    <CommunityNavItem />
                     {user && (
                         <NavLink
                             to="/library"
@@ -48,10 +42,14 @@ const Header = () => {
                                 <span className="text-xl">🛒</span>
                                 {user.cartCount > 0 && (
                                     <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
-                    {user.cartCount}
-                  </span>
+                                         {user.cartCount}
+                                    </span>
                                 )}
                             </Link>
+                            <Link to="/wishlist" className="relative">
+                                <span className="text-xl">💖</span>
+                            </Link>
+
                             <Link
                                 to="/profile"
                                 className="w-8 h-8 rounded-full bg-blue-600 flex items-center justify-center text-white"

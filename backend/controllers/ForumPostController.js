@@ -8,11 +8,8 @@ export class ForumPostController {
                 user_id,
                 title,
                 content,
-                views: 0,
-                created_at: new Date(),
-                updated_at: new Date()
             });
-            res.status(201).json(post);
+            res.json(post);
         } catch (error) {
             res.status(400).json({ error: 'Failed to create forum post' });
         }
@@ -24,6 +21,26 @@ export class ForumPostController {
             res.json(posts);
         } catch (error) {
             res.status(500).json({ error: 'Failed to fetch forum posts' });
+        }
+    }
+    
+    static async deletePost(req, res) {
+        try {
+            const { id } = req.params;
+
+            const post = await models.ForumPost.findByPk(id);
+
+            if (!post) {
+                return res.status(404).json({ error: 'Forum post not found' });
+            }
+
+            await post.destroy();
+
+            res.status(204).send();
+
+        } catch (error) {
+            console.error('Error deleting forum post:', error);
+            res.status(500).json({ error: 'Failed to delete forum post' });
         }
     }
 }

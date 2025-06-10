@@ -3,7 +3,7 @@ import { DeveloperController } from '../../controllers/DeveloperController.js';
 
 const router = Router();
 
-router.get('/', DeveloperController.getAll);
+router.get('/', DeveloperController.getAllDevelopers);
 router.get('/:id', DeveloperController.getById);
 router.post('/', DeveloperController.create);
 router.put('/:id', DeveloperController.update);

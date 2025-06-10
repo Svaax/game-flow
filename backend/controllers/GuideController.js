@@ -1,7 +1,7 @@
 import models from '../db/index.js';
 
 export class GuideController {
-    static async getAll(req, res) {
+    static async getAllGuides(req, res) {
         try {
             const guides = await models.Guide.findAll();
             res.json(guides);
@@ -20,7 +20,7 @@ export class GuideController {
         }
     }
 
-    static async create(req, res) {
+    static async createGuide(req, res) {
         try {
             const { user_id, game_id, title, content } = req.body;
             const guide = await models.Guide.create({
@@ -38,7 +38,7 @@ export class GuideController {
         }
     }
 
-    static async update(req, res) {
+    static async updateGuide(req, res) {
         try {
             const guide = await models.Guide.findByPk(req.params.id);
             if (!guide) return res.status(404).json({ error: 'Guide not found' });
@@ -52,7 +52,7 @@ export class GuideController {
         }
     }
 
-    static async delete(req, res) {
+    static async deleteGuide(req, res) {
         try {
             const guide = await models.Guide.findByPk(req.params.id);
             if (!guide) return res.status(404).json({ error: 'Guide not found' });

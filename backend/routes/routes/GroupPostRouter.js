@@ -3,10 +3,10 @@ import { GroupPostController } from '../../controllers/GroupPostController.js';
 
 const router = Router();
 
-// router.get('/group/:group_id', GroupPostController.getByGroup);
-// router.get('/:id', GroupPostController.getById);
-router.post('/', GroupPostController.create);
-// router.put('/:id', GroupPostController.update);
-// router.delete('/:id', GroupPostController.delete);
+router.get('/', GroupPostController.getAllPostsByGroup);
+router.get('/:id', GroupPostController.getById);
+router.post('/', GroupPostController.createPost);
+router.put('/:id', GroupPostController.updatePost);
+router.delete('/:id', GroupPostController.deletePost);
 
 export default router;

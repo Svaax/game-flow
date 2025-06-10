@@ -1,29 +1,31 @@
-import React, { useState } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { selectEditingGame, setEditingGame, updateFormData, updateGame } from '../gamesSlice';
 
-const EditGameModal = ({ game, onClose, onSave }) => {
-    const [formData, setFormData] = useState({
-        title: game.title,
-        price: game.price,
-        release_date: game.release_date.split('T')[0], // Форматируем дату для input[type="date"]
-    });
+const EditGameModal = () => {
+    const dispatch = useDispatch();
+    const editingGame = useSelector(selectEditingGame);
 
     const handleChange = (e) => {
-        const { name, value } = e.target;
-        setFormData({ ...formData, [name]: value });
+        const { name, value, type, checked } = e.target;
+        const updatedValue = type === 'checkbox' ? checked : value;
+
+        dispatch(updateFormData({
+            [name]: updatedValue
+        }));
     };
 
-    const handleSubmit = async (e) => {
+    const handleSubmit = (e) => {
         e.preventDefault();
-        try {
-            await onSave({
-                game_id: game.game_id,
-                ...formData,
-            }).unwrap();
-            onClose();
-        } catch (err) {
-            console.error('Failed to update game:', err);
+        if (editingGame) {
+            dispatch(updateGame(editingGame));
         }
     };
+
+    const onClose = () => {
+        dispatch(setEditingGame(null));
+    };
+
+    if (!editingGame) return null;
 
     return (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
@@ -35,7 +37,7 @@ const EditGameModal = ({ game, onClose, onSave }) => {
                         <input
                             type="text"
                             name="title"
-                            value={formData.title}
+                            value={editingGame.title}
                             onChange={handleChange}
                             className="w-full border rounded px-3 py-2"
                         />
@@ -45,7 +47,7 @@ const EditGameModal = ({ game, onClose, onSave }) => {
                         <input
                             type="number"
                             name="price"
-                            value={formData.price}
+                            value={editingGame.price}
                             onChange={handleChange}
                             className="w-full border rounded px-3 py-2"
                             step="0.01"
@@ -56,10 +58,20 @@ const EditGameModal = ({ game, onClose, onSave }) => {
                         <input
                             type="date"
                             name="release_date"
-                            value={formData.release_date}
+                            value={editingGame.release_date.split('T')[0]}
                             onChange={handleChange}
                             className="w-full border rounded px-3 py-2"
                         />
+                    </div>
+                    <div className="mb-4 flex items-center">
+                        <input
+                            type="checkbox"
+                            name="is_active"
+                            checked={editingGame.is_active}
+                            onChange={handleChange}
+                            className="mr-2"
+                        />
+                        <label className="text-gray-700">Is Active</label>
                     </div>
                     <div className="flex justify-end space-x-2">
                         <button

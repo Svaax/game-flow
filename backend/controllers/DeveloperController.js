@@ -1,9 +1,9 @@
 import models from '../db/index.js';
 
 export class DeveloperController {
-    static async getAll(req, res) {
+    static async getAllDevelopers(req, res) {
         try {
-            const devs = await models.Developer.findAll({ include: models.User });
+            const devs = await models.Developer.findAll();
             res.json(devs);
         } catch (error) {
             res.status(500).json({ error: 'Failed to fetch developers' });

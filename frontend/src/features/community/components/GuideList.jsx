@@ -1,6 +1,6 @@
-import { useGetGuidesQuery } from './communityAPI.js'
+import { useGetGuidesQuery } from '../communityAPI.js'
 import { useParams } from 'react-router-dom'
-import LoadingSpinner from '../../shared/components/LoadingSpinner.jsx'
+import LoadingSpinner from '../../../shared/components/LoadingSpinner.jsx'
 import GuideCard from './GuideCard'
 
 const GuidesList = () => {

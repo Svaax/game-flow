@@ -1,46 +1,46 @@
-import { useState } from 'react';
-import { useGetAllGamesQuery, useUpdateGameMutation, useDeleteGameMutation } from '../adminAPI';
+import { useSelector, useDispatch } from 'react-redux';
+import {useEffect, useState} from "react";
+import {
+    selectAllGames,
+    selectSortedGames,
+    selectSortConfig,
+    selectEditingGame,
+    setSortConfig,
+    setEditingGame,
+    deleteGame,
+    fetchGames
+} from '../gamesSlice';
+import CreateGameModal from "./CreateGameModal.jsx";
 import EditGameModal from "./EditGameModal.jsx";
+
 const GamesTable = () => {
-    const { data: games, isLoading, error } = useGetAllGamesQuery();
-    const [updateGame] = useUpdateGameMutation();
-    const [deleteGame] = useDeleteGameMutation();
-    const [editingGame, setEditingGame] = useState(null);
-    const [sortConfig, setSortConfig] = useState({ key: 'game_id', direction: 'asc' });
+    const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
+
+    const dispatch = useDispatch();
+    const sortedGames = useSelector(selectSortedGames);
+    const sortConfig = useSelector(selectSortConfig);
+    const editingGame = useSelector(selectEditingGame);
+
+    useEffect(() => {
+        dispatch(fetchGames());
+    }, [dispatch]);
 
     const handleSort = (key) => {
-        let direction = 'asc';
-        if (sortConfig.key === key && sortConfig.direction === 'asc') {
-            direction = 'desc';
-        }
-        setSortConfig({ key, direction });
+        dispatch(setSortConfig(key));
     };
 
-    const sortedGames = [...(games || [])].sort((a, b) => {
-        if (a[sortConfig.key] < b[sortConfig.key]) {
-            return sortConfig.direction === 'asc' ? -1 : 1;
-        }
-        if (a[sortConfig.key] > b[sortConfig.key]) {
-            return sortConfig.direction === 'asc' ? 1 : -1;
-        }
-        return 0;
-    });
-
-    const handleDelete = async (gameId) => {
-        if (window.confirm('Are you sure you want to delete this game?')) {
-            try {
-                await deleteGame(gameId).unwrap();
-            } catch (err) {
-                console.error('Failed to delete game:', err);
-            }
-        }
+    const handleDelete = (gameId) => {
+        dispatch(deleteGame(gameId));
     };
-
-    if (isLoading) return <div className="text-center py-4">Loading...</div>;
-    if (error) return <div className="text-red-500 py-4">Error: {error.message}</div>;
 
     return (
         <div className="overflow-x-auto">
+            <button
+                onClick={() => setIsCreateModalOpen(true)}
+                className="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600"
+            >
+                Add New Game
+            </button>
             <table className="min-w-full bg-white border border-gray-200">
                 <thead>
                 <tr className="bg-gray-100">
@@ -68,6 +68,12 @@ const GamesTable = () => {
                     >
                         Release Date {sortConfig.key === 'release_date' && (sortConfig.direction === 'asc' ? '↑' : '↓')}
                     </th>
+                    <th
+                        className="py-2 px-4 border cursor-pointer"
+                        onClick={() => handleSort('is_active')}
+                    >
+                        Active {sortConfig.key === 'is_active' && (sortConfig.direction === 'asc' ? '↑' : '↓')}
+                    </th>
                     <th className="py-2 px-4 border">Actions</th>
                 </tr>
                 </thead>
@@ -76,11 +82,12 @@ const GamesTable = () => {
                     <tr key={game.game_id}>
                         <td className="py-2 px-4 border">{game.game_id}</td>
                         <td className="py-2 px-4 border">{game.title}</td>
-                        <td className="py-2 px-4 border">${game.price.toFixed(2)}</td>
+                        <td className="py-2 px-4 border">${game.price}</td>
                         <td className="py-2 px-4 border">{new Date(game.release_date).toLocaleDateString()}</td>
+                        <td className="py-2 px-4 border">{game.is_active ? 'Yes' : 'No'}</td>
                         <td className="py-2 px-4 border space-x-2">
                             <button
-                                onClick={() => setEditingGame(game)}
+                                onClick={() => dispatch(setEditingGame(game))}
                                 className="bg-blue-500 text-white px-2 py-1 rounded"
                             >
                                 Edit
@@ -97,13 +104,9 @@ const GamesTable = () => {
                 </tbody>
             </table>
 
-            {editingGame && (
-                <EditGameModal
-                    game={editingGame}
-                    onClose={() => setEditingGame(null)}
-                    onSave={updateGame}
-                />
-            )}
+            {editingGame && <EditGameModal/>}
+
+            {isCreateModalOpen && <CreateGameModal onClose={() => setIsCreateModalOpen(false)} />}
         </div>
     );
 };

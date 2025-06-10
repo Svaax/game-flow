@@ -4,18 +4,29 @@ import { Toaster } from 'react-hot-toast';
 import Header from './shared/components/Header';
 import Footer from './shared/components/Footer';
 import HomePage from './pages/HomePage';
+import AuthPage from './features/auth/AuthPage';
 import GamePage from './pages/GamePage.jsx';
-import Cart from './features/shop/Cart.jsx';
+import ProfilePage from './pages/ProfilePage.jsx';
+import CartPage from './pages/CartPage.jsx';
 import LibraryPage from './pages/LibraryPage.jsx';
 import CommunityPage from './pages/CommunityPage';
 import ForumPage from './pages/ForumPage';
-import AuthPage from './features/auth/AuthPage';
-import AdminDashboard from './features/admin/AdminDashboard';
-import PrivateRoute from './app/PrivateRoute';
-import AdminRoute from './app/AdminRoute';
+import ShopPage from "./pages/ShopPage.jsx";
 import PageNotFound from './pages/PageNotFound.jsx';
+import AdminDashboard from './features/admin/AdminDashboard';
+import AdminRoute from './app/AdminRoute';
 import LoadingSpinner from './shared/components/LoadingSpinner';
+import PrivateRoute from './app/PrivateRoute';
+import PostCommentsPage from "./features/community/components/PostCommentsPage.jsx";
 import './App.css';
+import GroupPage from './pages/GroupPage.jsx';
+import GroupsPage from "./pages/GroupsPage.jsx";
+import GuidesPage from './pages/GuidesPage.jsx';
+import GuidePostPage from "./pages/GuidePostPage.jsx";
+import WishlistPage from './pages/WishlistPage.jsx';
+import ForumPost from "./features/community/components/ForumPost.jsx";
+
+import {Roles} from './shared/constants.js'
 
 function App() {
     return (
@@ -27,16 +38,26 @@ function App() {
                     <Routes>
                         {/* Public routes */}
                         <Route path="/" element={<HomePage />} />
+                        <Route path="/shop" element={<ShopPage />} />
                         <Route path="/game/:id" element={<GamePage />} />
-                        <Route path="/community" element={<CommunityPage />} />
-                        <Route path="/forum" element={<ForumPage />} />
                         <Route path="/auth/:type" element={<AuthPage />} />
+                        <Route path="/profile" element={<ProfilePage />} />
+                        <Route path="/community" element={<CommunityPage />} />
+                        <Route path="/community/forum" element={<ForumPage />} />
+                        <Route path="/community/forum/post/:id" element={<ForumPost />} />
+
+                        <Route path="/community/groups" element={<GroupsPage />} />
+                        <Route path="/community/guides/" element={<GuidesPage />} />
+                        <Route path="/community/guides/:id" element={<GuidePostPage />} />
+                        <Route path="/community/groups/:id" element={<GroupPage />} />
+                        <Route path="/community/posts/:id" element={<PostCommentsPage />} />
 
                         {/* Private routes */}
-                        <Route element={<PrivateRoute />}>
-                            <Route path="/cart" element={<Cart />} />
+
+                        <Route element={<PrivateRoute allowedRoles={[Roles.USER, Roles.DEVELOPER, Roles.PUBLISHER ,Roles.ADMIN]} />}>
+                            <Route path="/cart" element={<CartPage/>} />
                             <Route path="/library" element={<LibraryPage />} />
-                            {/*<Route path="/wishlist" element={<WishlistPage/>} />*/}
+                            <Route path="/wishlist" element={<WishlistPage/>} />
                         </Route>
 
                         {/* Admin routes */}

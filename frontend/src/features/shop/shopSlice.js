@@ -1,56 +1,75 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
-import { shopAPI } from './shopAPI.js'
+import { API_BASE_URL } from '../../config.js'
 
-// Асинхронные thunks
+// Async thunk для загрузки игр
 export const fetchGames = createAsyncThunk(
     'shop/fetchGames',
-    async (params, { rejectWithValue }) => {
+    async (filters, { rejectWithValue }) => {
         try {
-            return await shopAPI.getGames(params)
+            const response = await fetch(`${API_BASE_URL}/api/games?`)
+            const data = await response.json()
+            return data
         } catch (err) {
-            return rejectWithValue(err.response.data)
+            return rejectWithValue(err.message)
         }
     }
 )
 
 const initialState = {
     games: [],
-    cart: [],
-    wishlist: [],
-    status: 'idle',
-    error: null,
+    cart: [],        // [{ game, quantity }, ...]
+    wishlist: [],    // [ game, ... ]
     filters: {
-        genre: '',
-        priceRange: [0, 100],
-        searchQuery: ''
-    }
+        searchQuery: '',
+        selectedPrice: null,
+        priceRange: [0, 100]
+    },
+    status: 'idle',
+    error: null
 }
 
 const shopSlice = createSlice({
     name: 'shop',
     initialState,
     reducers: {
-        addToCart: (state, action) => {
+        updateFilters(state, action) {
+            state.filters = { ...state.filters, ...action.payload }
+        },
+        addToCart(state, action) {
             const game = action.payload
-            const existingItem = state.cart.find(item => item.id === game.id)
-            if (!existingItem) {
-                state.cart.push({...game, quantity: 1})
+            const existing = state.cart.find(item => item.game.game_id === game.game_id)
+            if (existing) {
+                existing.quantity += 1
+            } else {
+                state.cart.push({ game, quantity: 1 })
             }
         },
-        addToWishlist: (state, action) => {
+        removeFromCart(state, action) {
+            const gameId = action.payload
+            state.cart = state.cart.filter(item => item.game.game_id !== gameId)
+        },
+        addToWishlist(state, action) {
             const game = action.payload
-            if (!state.wishlist.some(item => item.id === game.id)) {
+            if (!state.wishlist.some(g => g.game_id === game.game_id)) {
                 state.wishlist.push(game)
             }
         },
-        updateFilters: (state, action) => {
-            state.filters = {...state.filters, ...action.payload}
+        removeFromWishlist(state, action) {
+            const gameId = action.payload
+            state.wishlist = state.wishlist.filter(g => g.game_id !== gameId)
+        },
+        clearCart(state) {
+            state.cart = []
+        },
+        clearWishlist(state) {
+            state.wishlist = []
         }
     },
-    extraReducers: (builder) => {
+    extraReducers: builder => {
         builder
-            .addCase(fetchGames.pending, (state) => {
+            .addCase(fetchGames.pending, state => {
                 state.status = 'loading'
+                state.error = null
             })
             .addCase(fetchGames.fulfilled, (state, action) => {
                 state.status = 'succeeded'
@@ -58,26 +77,34 @@ const shopSlice = createSlice({
             })
             .addCase(fetchGames.rejected, (state, action) => {
                 state.status = 'failed'
-                state.error = action.payload.message
+                state.error = action.payload || action.error.message
             })
     }
 })
 
-export const { addToCart, addToWishlist, updateFilters } = shopSlice.actions
-export default shopSlice.reducer
+export const {
+    updateFilters,
+    addToCart,
+    removeFromCart,
+    addToWishlist,
+    removeFromWishlist,
+    clearCart,
+    clearWishlist
+} = shopSlice.actions
 
 // Селекторы
-export const selectAllGames = (state) => state.shop.games
-export const selectCartItems = (state) => state.shop.cart
-export const selectWishlist = (state) => state.shop.wishlist
-export const selectFilters = (state) => state.shop.filters
-export const selectFilteredGames = (state) => {
+export const selectAllGames      = state => state.shop.games
+export const selectFilters       = state => state.shop.filters
+export const selectShopStatus    = state => state.shop.status
+export const selectShopError     = state => state.shop.error
+export const selectCartItems     = state => state.shop.cart
+export const selectWishlistItems = state => state.shop.wishlist
+
+export const selectFilteredGames = state => {
     const { games, filters } = state.shop
-    return games.filter(game => {
-        const matchesGenre = !filters.genre || game.genres.includes(filters.genre)
-        const matchesPrice = game.price >= filters.priceRange[0] &&
-            game.price <= filters.priceRange[1]
-        const matchesSearch = game.title.toLowerCase().includes(filters.searchQuery.toLowerCase())
-        return matchesGenre && matchesPrice && matchesSearch
-    })
+    return games
+        .filter(g => !filters.searchQuery || g.title.toLowerCase().includes(filters.searchQuery.toLowerCase()))
+        .filter(g => !filters.selectedPrice || g.price <= filters.selectedPrice)
 }
+
+export default shopSlice.reducer

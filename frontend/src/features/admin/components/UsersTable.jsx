@@ -1,39 +1,33 @@
-import { useState } from 'react';
-import { useGetAllUsersQuery, useUpdateUserRoleMutation } from '../adminAPI.js';
+import {useSelector, useDispatch} from "react-redux";
+import {useEffect} from "react";
+import EditUserModal from "./EditUserModal.jsx";
+import {
+    selectAllUsers,
+    selectSortedUsers,
+    selectSortConfig,
+    selectEditingUser,
+    setSortConfig,
+    setEditingUser,
+    deleteUser,
+    fetchUsers
+} from '../usersSlice';
 
 const UsersTable = () => {
-    const { data: users, isLoading, error } = useGetAllUsersQuery();
-    const [updateRole] = useUpdateUserRoleMutation();
-    const [sortConfig, setSortConfig] = useState({ key: 'user_id', direction: 'asc' });
+    const dispatch = useDispatch();
+    const sortedUsers = useSelector(selectSortedUsers);
+    const sortConfig = useSelector(selectSortConfig);
+    const editingUser = useSelector(selectEditingUser);
+
+    useEffect(() => {
+        dispatch(fetchUsers());
+    }, [dispatch]);
 
     const handleSort = (key) => {
-        let direction = 'asc';
-        if (sortConfig.key === key && sortConfig.direction === 'asc') {
-            direction = 'desc';
-        }
-        setSortConfig({ key, direction });
+        dispatch(setSortConfig(key));
     };
-
-    const sortedUsers = [...(users || [])].sort((a, b) => {
-        if (a[sortConfig.key] < b[sortConfig.key]) {
-            return sortConfig.direction === 'asc' ? -1 : 1;
-        }
-        if (a[sortConfig.key] > b[sortConfig.key]) {
-            return sortConfig.direction === 'asc' ? 1 : -1;
-        }
-        return 0;
-    });
-
-    const handleRoleChange = async (userId, newRole) => {
-        try {
-            await updateRole({ userId, role: newRole }).unwrap();
-        } catch (err) {
-            console.error('Failed to update role:', err);
-        }
-    };
-
-    if (isLoading) return <div className="text-center py-4">Loading...</div>;
-    if (error) return <div className="text-red-500 py-4">Error: {error.message}</div>;
+    const handleDelete = (userId) => {
+        dispatch(deleteUser(userId));
+    }
 
     return (
         <div className="overflow-x-auto">
@@ -50,10 +44,21 @@ const UsersTable = () => {
                         className="py-2 px-4 border cursor-pointer"
                         onClick={() => handleSort('username')}
                     >
-                        Username {sortConfig.key === 'username' && (sortConfig.direction === 'asc' ? '↑' : '↓')}
+                        Title {sortConfig.key === 'username' && (sortConfig.direction === 'asc' ? '↑' : '↓')}
                     </th>
-                    <th className="py-2 px-4 border">Email</th>
-                    <th className="py-2 px-4 border">Role</th>
+                    <th
+                        className="py-2 px-4 border cursor-pointer"
+                        onClick={() => handleSort('email')}
+                    >
+                        Price {sortConfig.key === 'email' && (sortConfig.direction === 'asc' ? '↑' : '↓')}
+                    </th>
+                   <th
+                       className="py-2 px-4 border cursor-pointer"
+                       onClick={() => handleSort('role')}
+                   >
+                        Role {sortConfig.key === 'role' && (sortConfig.direction === 'asc' ? '↑' : '↓')}
+                    </th>
+                    <th className="py-2 px-4 border">Actions</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -62,21 +67,33 @@ const UsersTable = () => {
                         <td className="py-2 px-4 border">{user.user_id}</td>
                         <td className="py-2 px-4 border">{user.username}</td>
                         <td className="py-2 px-4 border">{user.email}</td>
-                        <td className="py-2 px-4 border">
-                            <select
-                                value={user.role}
-                                onChange={(e) => handleRoleChange(user.user_id, e.target.value)}
-                                className="border rounded px-2 py-1"
+                        <td className="py-2 px-4 border">{user.role} </td>
+                        <td className="py-2 px-4 border space-x-2">
+                            <button
+                                onClick={() => dispatch(setEditingUser(user))}
+                                className="bg-blue-500 text-white px-2 py-1 rounded"
                             >
-                                <option value="user">User</option>
-                                <option value="moderator">Moderator</option>
-                                <option value="admin">Admin</option>
-                            </select>
+                                Edit
+                            </button>
+                            <button
+                                onClick={() => handleDelete(user.user_id)}
+                                className="bg-red-500 text-white px-2 py-1 rounded"
+                            >
+                                Delete
+                            </button>
                         </td>
                     </tr>
                 ))}
                 </tbody>
             </table>
+
+            {editingUser && (
+                <EditUserModal
+                    user={editingUser}
+                    onClose={() => setEditingUser(null)}
+                />
+            )}
+
         </div>
     );
 };
